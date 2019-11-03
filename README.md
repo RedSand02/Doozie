@@ -1,2 +1,1 @@
-# DoozieDoctorPortal
-Portal for Doozie doctors
+# Doozie
