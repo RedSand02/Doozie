@@ -1,17 +1,36 @@
 import React from 'react';
 import './App.scss';
+import { ThemeProvider } from '@material-ui/core/styles';
+import {
+  CssBaseline,
+  createMuiTheme
+} from "@material-ui/core";
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 import {
   BrowserRouter,
-  Route} from 'react-router-dom';
+  Route
+} from 'react-router-dom';
 
-  import Header from './components/Header';
-  import Login from './components/Login';
+import Header from './components/Header';
+import Login from './components/Login';
 
 export default function App() {
 
+  const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
+  const theme = React.useMemo(
+    () =>
+      createMuiTheme({
+        palette: {
+          type: prefersDarkMode ? 'dark' : 'light',
+        },
+      }),
+    [prefersDarkMode],
+  );
+
   return (
-    <div>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
       <Header />
       <BrowserRouter>
         <div>
@@ -22,8 +41,7 @@ export default function App() {
           <Route exact path="/DoctorsScore" component={DoctorsScore} />
         </div>
       </BrowserRouter>
-      <h1>footer</h1>
-    </div>
+    </ThemeProvider>
   );
 }
 

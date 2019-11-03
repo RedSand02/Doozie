@@ -8,6 +8,8 @@ import MenuIcon from "@material-ui/icons/Menu";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
+import { useTheme } from '@material-ui/core/styles';
+
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -22,7 +24,8 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function Header() {
-  const classes = useStyles({});
+  const theme = useTheme();
+  const classes = useStyles(theme);
   const auth = false;
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
@@ -39,14 +42,16 @@ export default function Header() {
     <div className={classes.root}>
       <AppBar position="static">
         <Toolbar>
-          <IconButton
-            edge="start"
-            className={classes.menuButton}
-            color="inherit"
-            aria-label="menu"
-          >
-            <MenuIcon />
-          </IconButton>
+          {auth &&
+            <IconButton
+              edge="start"
+              className={classes.menuButton}
+              color="inherit"
+              aria-label="menu"
+            >
+              <MenuIcon />
+            </IconButton>
+          }
           <Typography variant="h6" className={classes.title}>
             Doozie - Doctors portal
           </Typography>
