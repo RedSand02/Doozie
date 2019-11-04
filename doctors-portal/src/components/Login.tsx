@@ -4,7 +4,8 @@ import userDataManagement from '../utils/userDataManagement';
 import { app } from '../utils/constants';
 import { makeStyles } from '@material-ui/core/styles';
 import { useTheme } from '@material-ui/styles';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import { PhoneIphoneOutlined } from '@material-ui/icons';
+import { isMobileNumberValid } from '../utils/commonUtils';
 import { Container, CssBaseline, Avatar, Typography, TextField, FormControlLabel, Button, Grid, Link, Box, Checkbox } from '@material-ui/core';
 
 export interface LoginProps extends IProps {
@@ -36,33 +37,56 @@ export default function Login() {
     const theme = useTheme();
     const classes = useStyles(theme);
 
+    const [mobileNumber, setMobileNumber] = React.useState("");
     const [mobileNumberSubmitted, setmobileNumberSubmitted] = React.useState(false);
+    const [isNumberValid, setIsNumberValid] = React.useState(true);
+
+    const updateMobileNumber = event => {
+        const mobileNumber = event.target.value;
+        if(!isNumberValid && isMobileNumberValid(mobileNumber)) {
+            setIsNumberValid(true);
+        }
+        setMobileNumber(event.target.value);
+    }
 
     const handleMobileNumberSubmit = event => {
-        setmobileNumberSubmitted(true);
+        if (isMobileNumberValid(mobileNumber)) {
+            setmobileNumberSubmitted(true);
+        }
+        else {
+            setIsNumberValid(false);
+        }
+        event.preventDefault();
     };
+
+    const changeMobileNumber = event => {
+        setmobileNumberSubmitted(false);
+    }
 
     return (
         <Container component="main" maxWidth="xs">
             <CssBaseline />
             <div className={classes.paper}>
                 <Avatar className={classes.avatar}>
-                    <LockOutlinedIcon />
+                    <PhoneIphoneOutlined />
                 </Avatar>
                 <Typography component="h1" variant="h5">
                     Sign in
                     </Typography>
-                <form className={classes.form} noValidate>
+                <form className={classes.form} onSubmit={handleMobileNumberSubmit} noValidate>
                     {!mobileNumberSubmitted &&
                         <div>
                             <TextField
+                                error={!isNumberValid}
+                                helperText={isNumberValid ? "" : "Incorrect mobile number"}
                                 variant="outlined"
                                 margin="normal"
                                 required
                                 fullWidth
+                                value={mobileNumber}
+                                onChange={updateMobileNumber}
                                 id="mobile-number"
                                 label="Mobile number"
-                                name="mobile-number"
                                 autoComplete="tel"
                                 autoFocus
                             />
@@ -88,7 +112,6 @@ export default function Login() {
                                 margin="normal"
                                 required
                                 fullWidth
-                                name="otp"
                                 label="OTP"
                                 type="password"
                                 id="otp"
@@ -99,22 +122,22 @@ export default function Login() {
                                 color="primary"
                                 className={classes.submit}
                             >
-                                Sign In
+                                {"Sign In"}
                             </Button>
+                            <Grid container>
+                                <Grid item xs>
+                                    <Link variant="body2">
+                                        {"Retry sending OTP"}
+                                    </Link>
+                                </Grid>
+                                <Grid item>
+                                    <Link onClick={changeMobileNumber} variant="body2">
+                                        {"Change mobile number"}
+                                    </Link>
+                                </Grid>
+                            </Grid>
                         </div>
                     }
-                    <Grid container>
-                        <Grid item xs>
-                            <Link href="#" variant="body2">
-                                Retry sending OTP
-                                </Link>
-                        </Grid>
-                        <Grid item>
-                            <Link href="#" variant="body2">
-                                {"Don't have an account? Sign Up"}
-                            </Link>
-                        </Grid>
-                    </Grid>
                 </form>
             </div>
             <Box mt={8}>
