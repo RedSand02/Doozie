@@ -34,14 +34,13 @@ export const get = async <T>(
 export const post = async <T>(
     path: string,
     body: any,
+    headers?: any,
     args: RequestInit = { method: "post", body: JSON.stringify(body) }
 ): Promise<IHttpResponse<T>> => {
-    args.headers = new Headers(
-        {
-            "Content-Type": "application/json",
-            "Accept-Encoding": "gzip, deflate"
-        }
-    );
+    if(headers) {
+        args.headers = new Headers(headers);
+    }
+    
     return await http<T>(new Request(path, args));
 };
 

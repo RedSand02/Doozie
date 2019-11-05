@@ -6,3 +6,12 @@ export const isMobileNumberValid = (value: string): boolean => {
 
     return false;
 }
+
+export const isOtpValid = (otp: string): boolean => {
+    if(otp != null && otp.match(/\d/g) != null)
+    {
+        return otp.match(/\d/g).length === 4;
+    }
+
+    return false;
+}

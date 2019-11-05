@@ -1,11 +1,10 @@
 import * as React from 'react';
 import { IProps } from '../scripts/common/base';
 import userDataManagement from '../utils/userDataManagement';
-import { app } from '../utils/constants';
 import { makeStyles } from '@material-ui/core/styles';
 import { useTheme } from '@material-ui/styles';
 import { PhoneIphoneOutlined } from '@material-ui/icons';
-import { isMobileNumberValid } from '../utils/commonUtils';
+import { isMobileNumberValid, isOtpValid } from '../utils/commonUtils';
 import AuthService from '../services/authenticationService';
 import { Container, CssBaseline, Avatar, Typography, TextField, FormControlLabel, Button, Grid, Link, Box, Checkbox } from '@material-ui/core';
 
@@ -34,27 +33,46 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-export default function Login() {
+export default function Login(props: LoginProps) {
     const theme = useTheme();
     const classes = useStyles(theme);
 
     const [mobileNumber, setMobileNumber] = React.useState("");
-    const [mobileNumberSubmitted, setmobileNumberSubmitted] = React.useState(false);
+    const [otp, setOtp] = React.useState("");
+    const [isMobileNumberSubmitted, setIsMobileNumberSubmitted] = React.useState(false);
     const [isNumberValid, setIsNumberValid] = React.useState(true);
+    const [isOtpSubmittedInvalid, setIsOtpSubmittedInvalid] = React.useState(false);
+    const [otpRequestResponse, setOtpRequestResponse] = React.useState({
+        otp_id: "",
+        expiry: 0
+    });
 
     const updateMobileNumber = event => {
         const mobileNumber = event.target.value;
-        if(!isNumberValid && isMobileNumberValid(mobileNumber)) {
+        if (!isNumberValid && isMobileNumberValid(mobileNumber)) {
             setIsNumberValid(true);
         }
         setMobileNumber(event.target.value);
     }
 
-    const handleMobileNumberSubmit = event => {
+    const updateOtp = async (event) => {
+        const otp = event.target.value;
+        if (isOtpSubmittedInvalid && isOtpValid(otp)) {
+            setIsOtpSubmittedInvalid(false);
+            //setOtp(event.target.value);
+            //const submitOtpResponse = await submitOtp(event);
+        }
+        setOtp(event.target.value);
+    }
+
+    const handleMobileNumberSubmit = async (event) => {
         if (isMobileNumberValid(mobileNumber)) {
-            setmobileNumberSubmitted(true);
-            const otpInfo = AuthService.requestOtp(mobileNumber);
-            console.log(otpInfo);
+            setIsMobileNumberSubmitted(true);
+            const otpInfo = await AuthService.requestOtp(mobileNumber);
+            setOtpRequestResponse({
+                otp_id: otpInfo.otp_id,
+                expiry: otpInfo.expiry
+            });
         }
         else {
             setIsNumberValid(false);
@@ -62,8 +80,31 @@ export default function Login() {
         event.preventDefault();
     };
 
+    const submitOtp = async (event) => {
+        if (isOtpValid(otp)) {
+            const submitOtpResponse = await AuthService.submitOtp(otp, mobileNumber, otpRequestResponse.otp_id);
+            if(submitOtpResponse === null) {
+                setIsOtpSubmittedInvalid(true);
+            }
+            else {
+                userDataManagement.storeUserInfo(submitOtpResponse);
+                console.log("Login successful");
+            }
+        }
+        else {
+            setIsOtpSubmittedInvalid(true);
+        }
+        
+        event.preventDefault();
+    };
+
     const changeMobileNumber = event => {
-        setmobileNumberSubmitted(false);
+        console.log("otp_id" + otpRequestResponse.otp_id);
+        setOtpRequestResponse({
+            otp_id: "",
+            expiry: 0
+        });
+        setIsMobileNumberSubmitted(false);
     }
 
     return (
@@ -76,8 +117,9 @@ export default function Login() {
                 <Typography component="h1" variant="h5">
                     Sign in
                     </Typography>
-                <form className={classes.form} onSubmit={handleMobileNumberSubmit} noValidate>
-                    {!mobileNumberSubmitted &&
+
+                {!isMobileNumberSubmitted &&
+                    <form className={classes.form} onSubmit={handleMobileNumberSubmit} noValidate>
                         <div>
                             <TextField
                                 error={!isNumberValid}
@@ -107,10 +149,14 @@ export default function Login() {
                                 Request OTP
                             </Button>
                         </div>
-                    }
-                    {mobileNumberSubmitted &&
+                    </form>
+                }
+                {isMobileNumberSubmitted &&
+                    <form className={classes.form} onSubmit={submitOtp} noValidate>
                         <div>
                             <TextField
+                                error={isOtpSubmittedInvalid}
+                                helperText={isOtpSubmittedInvalid ? "Invalid OTP" : ""}
                                 variant="outlined"
                                 margin="normal"
                                 required
@@ -118,12 +164,14 @@ export default function Login() {
                                 label="OTP"
                                 type="password"
                                 id="otp"
+                                onChange={updateOtp}
                             />
                             <Button
                                 fullWidth
                                 variant="contained"
                                 color="primary"
                                 className={classes.submit}
+                                onClick={submitOtp}
                             >
                                 {"Sign In"}
                             </Button>
@@ -140,8 +188,8 @@ export default function Login() {
                                 </Grid>
                             </Grid>
                         </div>
-                    }
-                </form>
+                    </form>
+                }
             </div>
             <Box mt={8}>
                 <Link href="" />
