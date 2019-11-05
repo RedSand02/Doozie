@@ -6,6 +6,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { useTheme } from '@material-ui/styles';
 import { PhoneIphoneOutlined } from '@material-ui/icons';
 import { isMobileNumberValid } from '../utils/commonUtils';
+import AuthService from '../services/authenticationService';
 import { Container, CssBaseline, Avatar, Typography, TextField, FormControlLabel, Button, Grid, Link, Box, Checkbox } from '@material-ui/core';
 
 export interface LoginProps extends IProps {
@@ -52,6 +53,8 @@ export default function Login() {
     const handleMobileNumberSubmit = event => {
         if (isMobileNumberValid(mobileNumber)) {
             setmobileNumberSubmitted(true);
+            const otpInfo = AuthService.requestOtp(mobileNumber);
+            console.log(otpInfo);
         }
         else {
             setIsNumberValid(false);

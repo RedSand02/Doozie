@@ -1,0 +1,1 @@
+export const BaseUrl = "http://dev-orchestrator-881180201.ap-south-1.elb.amazonaws.com:8030/v1/";
