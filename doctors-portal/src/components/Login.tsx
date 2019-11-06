@@ -88,6 +88,7 @@ export default function Login(props: LoginProps) {
             }
             else {
                 userDataManagement.storeUserInfo(submitOtpResponse);
+                props.history.push('/dashboard');
                 console.log("Login successful");
             }
         }

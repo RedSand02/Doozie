@@ -14,6 +14,7 @@ import {
 
 import Header from './components/Header';
 import Login from './components/Login';
+import Dashboard from './components/Dashboard';
 
 export default function App() {
 
@@ -36,9 +37,7 @@ export default function App() {
         <div>
           <Route exact path="/" component={Login} />
           <Route exact path="/login" component={Login} />
-          <Route exact path="/Home" component={Home} />
-          <Route exact path="/DoctorsRequest" component={DoctorsRequest} />
-          <Route exact path="/DoctorsScore" component={DoctorsScore} />
+          <Route exact path="/dashboard" component={Dashboard} />
         </div>
       </BrowserRouter>
     </ThemeProvider>
