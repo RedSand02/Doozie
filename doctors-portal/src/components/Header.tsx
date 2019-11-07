@@ -4,12 +4,13 @@ import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
-import MenuIcon from "@material-ui/icons/Menu";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import MenuItem from "@material-ui/core/MenuItem";
+import HomeIcon from "@material-ui/icons/Home";
 import Menu from "@material-ui/core/Menu";
 import { useTheme } from '@material-ui/core/styles';
-
+import userDataManagement from '../utils/userDataManagement';
+import { IProps } from "../scripts/common/base";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -23,10 +24,14 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function Header() {
+export interface IHeader extends IProps {
+
+}
+
+export default function Header(props: IHeader) {
   const theme = useTheme();
   const classes = useStyles(theme);
-  const auth = false;
+  const auth = userDataManagement.isUserLoggedIn();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
 
@@ -48,8 +53,9 @@ export default function Header() {
               className={classes.menuButton}
               color="inherit"
               aria-label="menu"
+              onClick={()=>{window.location.href = '/dashboard'}}
             >
-              <MenuIcon />
+              <HomeIcon/>
             </IconButton>
           }
           <Typography variant="h6" className={classes.title}>
@@ -81,8 +87,8 @@ export default function Header() {
                 open={open}
                 onClose={handleClose}
               >
-                <MenuItem onClick={handleClose}>Profile</MenuItem>
                 <MenuItem onClick={handleClose}>My account</MenuItem>
+                <MenuItem onClick={handleClose}>Sign out</MenuItem>
               </Menu>
             </div>
           )}

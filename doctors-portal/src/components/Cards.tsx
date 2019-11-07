@@ -6,6 +6,7 @@ import CardActionArea from '@material-ui/core/CardActionArea';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import IDashboardCardDetails from '../dataDefinitions/dashboardCardDetails';
+import { IProps } from '../scripts/common/base';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -21,17 +22,27 @@ const useStyles = makeStyles((theme: Theme) =>
     }),
 );
 
-export default function Cards(props) {
+export interface ICards extends IProps {
+    cards: IDashboardCardDetails[]
+}
+
+export default function Cards(props: ICards) {
     const theme = useTheme();
     const classes = useStyles(theme);
+
+    const goToPage = (uri: string) => {
+        if (uri !== ''){
+            props.history.push(uri);
+        }
+    }
 
     return (
         <Grid container className={classes.root} spacing={2}>
             <Grid item xs={12}>
                 <Grid container justify="center" spacing={10}>
-                    {props.cards.map(card => (  
+                    {props.cards.map((card: IDashboardCardDetails) => (  
                         <Grid key={card.name} item>
-                            <Card className={classes.card}>
+                            <Card className={classes.card} onClick={() => goToPage(card.uri)}>
                                 <CardActionArea>
                                     <CardContent>
                                         <Typography gutterBottom variant="h5" component="h2">

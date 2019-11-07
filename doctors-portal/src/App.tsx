@@ -15,6 +15,8 @@ import {
 import Header from './components/Header';
 import Login from './components/Login';
 import Dashboard from './components/Dashboard';
+import HospitalBookings from './components/HospitalBookings';
+import OnlineConsultations from './components/OnlineConsultations';
 
 export default function App() {
 
@@ -32,48 +34,37 @@ export default function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Header />
+      <Header/>
       <BrowserRouter>
         <div>
           <Route exact path="/" component={Login} />
+          <Route exact path="/tests" component={Tests} />
+          <Route exact path="/scans" component={Scans} />
           <Route exact path="/login" component={Login} />
           <Route exact path="/dashboard" component={Dashboard} />
+          <Route exact path="/appointments" component={Appointments} />
+          <Route exact path="/callbackrequests" component={CallBackRequests} />
+          <Route exact path="/hospitalbookings" component={HospitalBookings} />
+          <Route exact path="/onlineconsulations" component={OnlineConsultations} />
         </div>
       </BrowserRouter>
     </ThemeProvider>
   );
 }
 
-function Home() {
-  return <h2>Home</h2>;
+function Appointments() {
+  return <h2>Appointments</h2>;
 }
 
-function DoctorsRequest() {
-  return <h2>DoctorsRequest</h2>;
+function CallBackRequests() {
+  return <h2>CallBack Requests</h2>;
 }
 
-function DoctorsScore() {
-  return <h2>DoctorsScore</h2>;
+function Tests() {
+  return <h2>Tests</h2>;
 }
 
-// function App() {
-//   return (
-//     <div className="App">
-//       <header className="App-header">
-//         <img src={logo} className="App-logo" alt="logo" />
-//         <p>
-//           Edit <code>src/App.js</code> and save to reload.
-//         </p>
-//         <a
-//           className="App-link"
-//           href="https://reactjs.org"
-//           target="_blank"
-//           rel="noopener noreferrer"
-//         >
-//           Learn React here
-//         </a>
-//       </header>
-//     </div>
-//   );
-// }
+function Scans() {
+  return <h2>Scans</h2>;
+}
 

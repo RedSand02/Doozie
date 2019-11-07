@@ -11,7 +11,10 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-export default function Dashboard() {
+export interface IDashboard extends IProps {
+}
+
+export default function Dashboard(props: IDashboard) {
     const theme = useTheme();
     const classes = useStyles(theme);
     let cardsToDisplay = getDashboardCardDetails();
@@ -20,7 +23,7 @@ export default function Dashboard() {
         <Container component="main" maxWidth="lg">
             <CssBaseline />
             <div className={classes.paper}>
-                <Cards cards={cardsToDisplay} />
+                <Cards cards={cardsToDisplay} history={props.history}/>
             </div>
         </Container>
     );

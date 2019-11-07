@@ -13,7 +13,7 @@ const CardDetails = {
         name: 'Online consultations',
         description: 'view online consultations',
         color: '',
-        uri: 'onlineconsulations',
+        uri: '/onlineconsulations',
         backgroundImage: '',
         accessRoles: []
     } as IDashboardCardDetails,
@@ -21,7 +21,7 @@ const CardDetails = {
         name: 'Appointments',
         description: 'view Appointments',
         color: '',
-        uri: 'appointments',
+        uri: '/appointments',
         backgroundImage: '',
         accessRoles: []
     } as IDashboardCardDetails,
@@ -29,7 +29,7 @@ const CardDetails = {
         name: 'Callback requests',
         description: 'view Callback requests',
         color: '',
-        uri: 'callbackrequests',
+        uri: '/callbackrequests',
         backgroundImage: '',
         accessRoles: []
     } as IDashboardCardDetails,
@@ -37,7 +37,7 @@ const CardDetails = {
         name: 'Tests',
         description: 'view Tests',
         color: '',
-        uri: 'tests',
+        uri: '/tests',
         backgroundImage: '',
         accessRoles: []
     } as IDashboardCardDetails,
@@ -45,7 +45,7 @@ const CardDetails = {
         name: 'Scans',
         description: 'view scans',
         color: '',
-        uri: 'scans',
+        uri: '/scans',
         backgroundImage: '',
         accessRoles: []
     } as IDashboardCardDetails,
@@ -53,7 +53,7 @@ const CardDetails = {
         name: 'Hospital bookings',
         description: 'view hospital bookings',
         color: '',
-        uri: 'hospitalbookings',
+        uri: '/hospitalbookings',
         backgroundImage: '',
         accessRoles: []
     } as IDashboardCardDetails
