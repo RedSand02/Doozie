@@ -43,6 +43,10 @@ export default function Header(props: IHeader) {
     setAnchorEl(null);
   };
 
+  const handleSignout = event => {
+    userDataManagement.clearLocalStorage();
+  }
+
   return (
     <div className={classes.root}>
       <AppBar position="static">
@@ -88,7 +92,7 @@ export default function Header(props: IHeader) {
                 onClose={handleClose}
               >
                 <MenuItem onClick={handleClose}>My account</MenuItem>
-                <MenuItem onClick={handleClose}>Sign out</MenuItem>
+                <MenuItem onClick={handleSignout}>Sign out</MenuItem>
               </Menu>
             </div>
           )}

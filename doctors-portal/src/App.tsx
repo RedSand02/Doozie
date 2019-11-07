@@ -14,8 +14,12 @@ import {
 
 import Header from './components/Header';
 import Login from './components/Login';
+import Tests from './components/Tests';
+import Scans from './components/Scans';
 import Dashboard from './components/Dashboard';
+import Appointments from './components/Appointments';
 import HospitalBookings from './components/HospitalBookings';
+import CallbackRequests from './components/CallbackRequests';
 import OnlineConsultations from './components/OnlineConsultations';
 
 export default function App() {
@@ -43,7 +47,7 @@ export default function App() {
           <Route exact path="/login" component={Login} />
           <Route exact path="/dashboard" component={Dashboard} />
           <Route exact path="/appointments" component={Appointments} />
-          <Route exact path="/callbackrequests" component={CallBackRequests} />
+          <Route exact path="/callbackrequests" component={CallbackRequests} />
           <Route exact path="/hospitalbookings" component={HospitalBookings} />
           <Route exact path="/onlineconsulations" component={OnlineConsultations} />
         </div>
@@ -52,19 +56,4 @@ export default function App() {
   );
 }
 
-function Appointments() {
-  return <h2>Appointments</h2>;
-}
-
-function CallBackRequests() {
-  return <h2>CallBack Requests</h2>;
-}
-
-function Tests() {
-  return <h2>Tests</h2>;
-}
-
-function Scans() {
-  return <h2>Scans</h2>;
-}
 

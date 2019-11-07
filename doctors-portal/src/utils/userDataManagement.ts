@@ -72,7 +72,7 @@ export default class UserDataManagement {
         localStorage[key] = value;
     }
 
-    public static clearLocalStorage(app: string) {
+    public static clearLocalStorage() {
         localStorage.removeItem(app);
         this.gotoLogin();
     }
