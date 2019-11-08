@@ -13,6 +13,9 @@ import SwipeableViews from 'react-swipeable-views';
 
 import Table, { ITable } from './Table';
 import { Column } from 'material-table';
+import AppointmentServices from '../services/appointmentServices';
+import getAppointmentListTableData from '../utils/getAppointmentListTableData';
+import IAppointmentListItemResponse from '../dataDefinitions/appointmentListItemResponse';
 
 export interface IAppointments extends IProps {
 }
@@ -25,11 +28,11 @@ export interface ITabPanel {
 }
 
 export interface Row {
+    appointmentId: string;
     patientName: string;
     status: string;
-    appointmentSlot: string;
+    date: string;
     doctorName: string;
-    providerLocation: string;
 }
 
 function TabPanel(props: ITabPanel) {
@@ -74,11 +77,11 @@ export default function Appointments(props: IAppointments) {
 
     const columns: Array<Column<Row>> =
     [
+        { title: 'Appointment ID', field: 'appointmentId' },
         { title: 'Patient name', field: 'patientName' },
         { title: 'Status', field: 'status' },
-        { title: 'Appointment slot', field: 'appointmentTime' },
         { title: 'Doctor name', field: 'doctorName' },
-        { title: 'Provider location', field: 'providerLocation' },
+        { title: 'Date', field: 'date' },
     ];
 
     const [onGoingTableState, setOnGoingTableState] = React.useState({
@@ -103,6 +106,40 @@ export default function Appointments(props: IAppointments) {
     const handleChangeIndex = index => {
         setValue(index);
     };
+
+    React.useEffect(() => {
+        AppointmentServices.getAppointmentsList()
+          .then((results: IAppointmentListItemResponse) => {
+            console.log("Fetched the on-going appointment list");
+            return getAppointmentListTableData(results);
+          })
+          .then((data: Row[]) => {
+            setOnGoingTableState({
+              ...onGoingTableState,
+              data: data,
+              isLoading: false
+            });
+          })
+          .catch(() => {
+            console.log("Failed to fetch on-going appointments list");
+          });
+    
+          AppointmentServices.getAppointmentsDetails("completed,closed")
+          .then((results: IAppointmentListItemResponse) => {
+            console.log("Fetched the closed appointments list");
+            return getAppointmentListTableData(results);
+          })
+          .then((data: Row[]) => {
+            setHistoryTableState({
+              ...onGoingTableState,
+              data: data,
+              isLoading: false
+            });
+          })
+          .catch(() => {
+            console.log("Failed to fetch closed appointments list");
+          });
+      }, []);
 
     return (
         <Container component="main" maxWidth="lg">

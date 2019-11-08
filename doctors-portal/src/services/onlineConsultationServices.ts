@@ -21,7 +21,7 @@ export default class OnlineConsultationServices {
             return response.parsedBody as IOnlineConsultationListResponse;
         }
         catch (ex) {
-            console.log("Exception in requesting OTP");
+            console.log("Exception in getting online consultation list");
         }
 
         return null;
@@ -43,7 +43,7 @@ export default class OnlineConsultationServices {
             return response.parsedBody as IOnlineConsultationListResponse;
         }
         catch (ex) {
-            console.log("Exception in submitting OTP");
+            console.log("Exception in getting online consultation details");
         }
 
         return null;
