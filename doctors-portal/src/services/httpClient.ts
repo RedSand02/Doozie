@@ -26,8 +26,12 @@ export const http = <T>(request: RequestInfo): Promise<IHttpResponse<T>> => {
 
 export const get = async <T>(
     path: string,
+    headers?: any,
     args: RequestInit = { method: "get" }
 ): Promise<IHttpResponse<T>> => {
+    if(headers) {
+        args.headers = new Headers(headers);
+    }
     return await http<T>(new Request(path, args));
 };
 
