@@ -74,7 +74,7 @@ export default function OnlineConsultations(props: IOnlineConsultations) {
     event: React.MouseEvent<Element, MouseEvent>,
     rowData: Row
   ) => {
-    alert("Row clicked");
+    props.history.push('/Onlineconsultaiondetails');
   };
 
   const columns: Array<Column<Row>> = [

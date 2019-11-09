@@ -47,6 +47,10 @@ export default function Login(props: LoginProps) {
         expiry: 0
     });
 
+    if(userDataManagement.isUserLoggedIn()) {
+        props.history.push("/dashboard");
+    }
+
     const updateMobileNumber = event => {
         const mobileNumber = event.target.value;
         if (!isNumberValid && isMobileNumberValid(mobileNumber)) {

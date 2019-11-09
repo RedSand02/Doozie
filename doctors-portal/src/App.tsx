@@ -21,6 +21,7 @@ import Appointments from './components/Appointments';
 import HospitalBookings from './components/HospitalBookings';
 import CallbackRequests from './components/CallbackRequests';
 import OnlineConsultations from './components/OnlineConsultations';
+import OnlineConsultaionDetails from './components/OnlineConsultationDetails';
 
 export default function App() {
 
@@ -50,6 +51,7 @@ export default function App() {
           <Route exact path="/callbackrequests" component={CallbackRequests} />
           <Route exact path="/hospitalbookings" component={HospitalBookings} />
           <Route exact path="/onlineconsulations" component={OnlineConsultations} />
+          <Route exact path="/Onlineconsultaiondetails" component={OnlineConsultaionDetails} />
         </div>
       </BrowserRouter>
     </ThemeProvider>
