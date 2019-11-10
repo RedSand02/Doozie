@@ -22,9 +22,8 @@ export default class AppointmentServices {
         }
         catch (ex) {
             console.log("Exception in getting appointments list");
+            throw ex;
         }
-
-        return null;
     }
 
     public static async getAppointmentsDetails(customerAppointmentId: string) {
@@ -44,8 +43,7 @@ export default class AppointmentServices {
         }
         catch (ex) {
             console.log("Exception in getting  Appointment details");
+            throw ex;
         }
-
-        return null;
     }
 }

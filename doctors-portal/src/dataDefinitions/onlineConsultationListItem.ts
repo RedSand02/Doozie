@@ -1,4 +1,24 @@
 /**
+ * IOnlineConsultationListItemDoctorNotes
+ */
+export interface IOCItemDoctorNotes {
+    prescription_data: [];
+}
+
+/**
+ * IOnlineConsultationListItemPrescriptionData
+ */
+export interface IOCItemPrescriptionData {
+    product_name: string;
+    frequency_unit: string;
+    frequency_value: number;
+    frequency_meal_labels: string;
+    frequency_time_labels: string;
+    dosage_quantity_unit: string;
+    dosage_quantity_value: number;
+}
+
+/**
  * IOnlineConsultationListItemUserDetails
  */
 export interface IOCListItemUserDetails {
@@ -66,7 +86,7 @@ export interface IOCPaymentAttributes {
 
 export default interface IOnlineConsultationListItem {
     user: IOCListItemUserDetails;
-    doctor_notes: {};
+    doctor_notes: IOCItemDoctorNotes;
     user_id: string;
     family_member_id: string;
     doctor_id: string;

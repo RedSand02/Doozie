@@ -32,6 +32,7 @@ export interface Row {
   dateOfBirth: string;
   gender: string;
   phoneNumber: string;
+  consultationId: string;
 }
 
 function TabPanel(props: ITabPanel) {
@@ -74,7 +75,7 @@ export default function OnlineConsultations(props: IOnlineConsultations) {
     event: React.MouseEvent<Element, MouseEvent>,
     rowData: Row
   ) => {
-    props.history.push('/Onlineconsultaiondetails');
+    props.history.push('/Onlineconsultaiondetails/' + rowData.consultationId);
   };
 
   const columns: Array<Column<Row>> = [
@@ -132,7 +133,7 @@ export default function OnlineConsultations(props: IOnlineConsultations) {
       })
       .then((data: Row[]) => {
         setHistoryTableState({
-          ...onGoingTableState,
+          ...historyTableState,
           data: data,
           isLoading: false
         });

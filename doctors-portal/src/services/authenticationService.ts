@@ -25,9 +25,8 @@ export default class AuthService {
         }
         catch (ex) {
             console.log("Exception in requesting OTP");
+            throw ex;
         }
-
-        return null;
     }
 
     public static async submitOtp(otp: string, phoneNumber: string, otpId: string) {
@@ -50,8 +49,7 @@ export default class AuthService {
         }
         catch (ex) {
             console.log("Exception in submitting OTP");
+            throw ex;
         }
-
-        return null;
     }
 }

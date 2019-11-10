@@ -8,16 +8,19 @@ import {
   AppBar,
   Toolbar,
   Typography,
-  Paper,
   Box,
   Tabs,
-  Tab
+  Tab,
+  Badge
 } from "@material-ui/core";
 import SwipeableViews from "react-swipeable-views";
-import { flexbox } from "@material-ui/system";
 
-import MessageList from './MessageList';
-import PrescriptionList from './PrescriptionList';
+import MessageList from "./MessageList";
+import PrescriptionList from "./PrescriptionList";
+import OnlineConsultationServices from "../services/onlineConsultationServices";
+import IOnlineConsultationListItem from "../dataDefinitions/onlineConsultationListItem";
+import { getMessages } from "../utils/onlineConsultationUtils";
+import { classes } from "istanbul-lib-coverage";
 
 export interface IOnlineConsultationDetails extends IProps {}
 
@@ -35,16 +38,29 @@ const useStyles = makeStyles(theme => ({
   consultatioDetailsPaper: {
     paddingRight: 24,
     paddingLeft: 24
+  },
+  inline: {
+    display: "inline"
+  },
+  padding: {
+    padding: theme.spacing(0, 2),
+  },
+  box: {
+    maxHeight: 600
   }
+  
 }));
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
+  const theme = useTheme();
+  const classes = useStyles(theme);
 
   return (
     <Typography
       component="div"
       role="tabpanel"
+      className={classes.box}
       hidden={value !== index}
       id={`full-width-tabpanel-OnlineConsultations-${index}`}
       aria-labelledby={`full-width-tab-OnlineConsultations-${index}`}
@@ -68,6 +84,18 @@ export default function OnlineConsultaionDetails(
   const theme = useTheme();
   const classes = useStyles(theme);
   const [value, setValue] = React.useState(0);
+  const consultationId = props.match.params.id;
+
+  const [consultationDetails, setConsultationDetails] = React.useState(
+    {
+      user: {},
+      doctor_notes: {},
+      messages: [],
+      documents: [],
+      adjustments: [],
+      payments: []
+    } as IOnlineConsultationListItem
+  );
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -76,6 +104,49 @@ export default function OnlineConsultaionDetails(
   const handleChangeIndex = index => {
     setValue(index);
   };
+
+  const getprescriptionData = () => {
+    if (consultationDetails.doctor_notes.prescription_data) {
+      return consultationDetails.doctor_notes.prescription_data;
+    } else return [];
+  };
+
+  const renderTypography = (key: string, value: string) => {
+    return(
+      <div>
+        <Typography
+          component="span"
+          variant="body2"
+          className={classes.inline}
+          color="textPrimary"
+        >
+          {key + ': '}
+        </Typography>
+        <Typography
+          component="span"
+          variant="body2"
+          className={classes.inline}
+          color="textSecondary"
+        >
+          {value}
+        </Typography>
+      </div>
+    );
+  }
+
+  React.useEffect(() => {
+    OnlineConsultationServices.getOnlineConsultaionDetails(consultationId)
+      .then((results: IOnlineConsultationListItem) => {
+        console.log("Fetched the consultation details");
+        return results;
+      })
+      .then((details: IOnlineConsultationListItem) => {
+        setConsultationDetails(details);
+      })
+      .catch(() => {
+        console.log("Failed to fetch on-going online consultation list");
+      });
+  }, []);
 
   return (
     <Container component="main" maxWidth="lg">
@@ -89,22 +160,15 @@ export default function OnlineConsultaionDetails(
           </Toolbar>
           <div className={classes.consultatioDetails}>
             <div className={classes.consultatioDetailsPaper}>
-              <Typography variant="h5" component="h2">
-                Patient information
-              </Typography>
-              <Typography component="p">Date</Typography>
-              <Typography component="p">Doctor name</Typography>
+              {renderTypography("Consultation ID", consultationDetails.customer_consultation_id)}
+              {renderTypography("Date", new Date(consultationDetails.requested_time).toDateString())}
+              {renderTypography("Doctor", "Unknown")}
             </div>
             <div className={classes.consultatioDetailsPaper}>
-              <Typography variant="h5" component="h2">
-                Doctor information
-              </Typography>
-              <Typography component="p">Date</Typography>
-              <Typography component="p">Doctor name</Typography>
-              <Typography component="p">Date</Typography>
-              <Typography component="p">Doctor name</Typography>
-              <Typography component="p">Date</Typography>
-              <Typography component="p">Doctor name</Typography>
+              {renderTypography("Patient name", consultationDetails.user.first_name + ' ' + consultationDetails.user.last_name)}
+              {renderTypography("Status", consultationDetails.user.status)}
+              {renderTypography("Gender", consultationDetails.user.gender)}
+              {renderTypography("Phone number", consultationDetails.user.phone_number)}
             </div>
           </div>
           <Tabs
@@ -114,8 +178,18 @@ export default function OnlineConsultaionDetails(
             textColor="primary"
             aria-label="Consultations details"
           >
-            <Tab label="Prescription" {...a11yProps(0)} />
-            <Tab label="Messages" {...a11yProps(1)} />
+            <Tab label={
+              <Badge className={classes.padding} color="primary" badgeContent={getprescriptionData().length}>
+                {"Prescription"}
+              </Badge>
+              }
+             {...a11yProps(0)} />
+            <Tab label={
+              <Badge className={classes.padding} color="primary" badgeContent={consultationDetails.messages.length}>
+                {"Messages"}
+              </Badge>
+              }
+             {...a11yProps(1)} />
           </Tabs>
         </AppBar>
         <SwipeableViews
@@ -124,10 +198,12 @@ export default function OnlineConsultaionDetails(
           onChangeIndex={handleChangeIndex}
         >
           <TabPanel value={value} index={0} dir="ltr">
-            <PrescriptionList />
+            <PrescriptionList prescriptionList={getprescriptionData()} />
           </TabPanel>
           <TabPanel value={value} index={1} dir="ltr">
-            <MessageList />
+            <MessageList
+              messages={getMessages(consultationDetails.messages || [])}
+            />
           </TabPanel>
         </SwipeableViews>
       </div>

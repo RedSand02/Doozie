@@ -13,6 +13,9 @@ export interface ITable {
     columns: Array<Column<{}>>;
     data: {}[];
     onRowClick: (event: React.MouseEvent<Element, MouseEvent>, rowData: {}) => {};
+    onRowAdd?: (newData: {}) => Promise<void>;
+    onRowUpdate?: (newData: {}, oldData?: {}) => Promise<void>;
+    onRowDelete?: (oldData: {}) => Promise<void>
 }
 
 export default function Table(props: ITable) {
@@ -27,6 +30,11 @@ export default function Table(props: ITable) {
                 data={props.data}
                 onRowClick={props.onRowClick}
                 options={{ paging: false }}
+                editable={{
+                    onRowAdd: props.onRowAdd,
+                    onRowUpdate: props.onRowUpdate,
+                    onRowDelete: props.onRowDelete
+                }}
             />
         </MuiThemeProvider>
     );

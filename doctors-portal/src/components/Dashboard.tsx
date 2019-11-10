@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { IProps, IState } from '../scripts/common/base';
-import { CircularProgress, Container, CssBaseline, makeStyles, useTheme } from '@material-ui/core';
+import { IProps } from '../scripts/common/base';
+import { Container, CssBaseline, makeStyles, useTheme } from '@material-ui/core';
 import Cards from './Cards';
 import { getDashboardCardDetails } from '../utils/getDashboardCardDetails';
 

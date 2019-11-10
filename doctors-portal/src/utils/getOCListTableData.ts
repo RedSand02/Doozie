@@ -10,7 +10,8 @@ export default function getOCListTableData(response: IOnlineConsultationListResp
                 status: item.status,
                 dateOfBirth: item.user.date_of_birth,
                 gender: item.user.gender,
-                phoneNumber: item.user.phone_number
+                phoneNumber: item.user.phone_number,
+                consultationId: item.customer_consultation_id
             } as Row;
         });
     }
