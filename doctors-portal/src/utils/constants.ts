@@ -1,1 +1,1 @@
-export const app = "DoozieDoctorsApp";
+export const app = "DooziePartnerApp";

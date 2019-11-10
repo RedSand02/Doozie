@@ -63,7 +63,7 @@ export default function Header(props: IHeader) {
             </IconButton>
           }
           <Typography variant="h6" className={classes.title}>
-            Doozie - Doctors portal
+            Doozie - Partner portal
           </Typography>
           {auth && (
             <div>
